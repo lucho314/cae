@@ -1,0 +1,21 @@
+<?php
+ 
+namespace app\models;
+use yii;
+use yii\base\Model;
+ 
+class ValidarRecuperacion extends model{
+ 
+    public $email;
+   
+
+
+    public function rules()
+    {
+        return [
+            ['email', 'required', 'message' => 'Campo requerido'],
+            ['email', 'match', 'pattern' => "/^.{5,80}$/", 'message' => 'Mínimo 5 y máximo 80 caracteres'],
+            ['email', 'email', 'message' => 'Formato no válido'],
+        ];
+    }
+}
