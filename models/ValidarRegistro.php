@@ -4,7 +4,7 @@ namespace app\models;
 use yii;
 use yii\base\Model;
 use app\models\Persona;
-use app\models\Usuario;
+use app\models\Users;
 
 class ValidarRegistro extends model{
     public $nombre;
@@ -27,21 +27,22 @@ class ValidarRegistro extends model{
             ['apellido', 'match', 'pattern' => "/^.{3,30}$/", 'message' => 'Mínimo 3 y máximo 30 caracteres'],
             ['apellido', 'match', 'pattern' => "/^[a-záéíóúñ\s]+$/i", 'message' => 'Sólo se aceptan letras'],
             ['domicilio', 'match', 'pattern' => "/^.{1,50}$/", 'message' => 'ah superado el maximo de 50 caracteres'],
-            ['domicilio', 'match', 'pattern' => "/^[a-záéíóúñ\s]+$/i", 'message' => 'Sólo se aceptan letras y números'],
+            ['domicilio', 'match', 'pattern' => "/^[0-9a-z\s]+$/i", 'message' => 'Sólo se aceptan letras y números'],
             ['telefono','number','message'=>'solo se aceptan numeros'],
             ['telefono','match', 'pattern' => "/^.{10,}$/", 'message' => 'Numero de telefono incorrecto'],
             ['dni','number','message'=>'solo se aceptan numeros'],
             ['dni','match', 'pattern' => "/^.{8,9}$/", 'message' => 'formato de DNI incorrecto'],
             ['dni', 'dni_existe'],
             ['nombre_usuario', 'match', 'pattern' => "/^.{3,8}$/", 'message' => 'Mínimo 3 y máximo 9 caracteres'],
-            ['nombre_usuario', 'match', 'pattern' => "/^[a-záéíóúñ\s]+$/i", 'message' => 'Sólo se aceptan letras y números'],
+            ['nombre_usuario', 'match', 'pattern' => "/^[0-9a-z\s]+$/i", 'message' => 'Sólo se aceptan letras y números'],
             ['nombre_usuario', 'usuario_existe'],
             ['contrasenia','match', 'pattern' => "/^.{6,20}$/", 'message' => 'Mínimo 6 y máximo 20 caracteres'],
-            ['contrasenia', 'match', 'pattern' => "/^[a-záéíóúñ\s]+$/i", 'message' => 'Sólo se aceptan letras y números'],
+            ['contrasenia', 'match', 'pattern' => "/^[0-9a-z\s]+$/i", 'message' => 'Sólo se aceptan letras y números'],
             ['email', 'required', 'message' => 'Campo requerido'],
             ['email', 'match', 'pattern' => "/^.{5,80}$/", 'message' => 'Mínimo 5 y máximo 80 caracteres'],
             ['email', 'email', 'message' => 'Formato no válido'],
             ['email', 'email_existe'],
+            ['conf_cont', 'compare', 'compareAttribute' => 'contrasenia', 'message' => 'Las contraseñas no coinciden']
            
             
         ];
@@ -86,8 +87,13 @@ class ValidarRegistro extends model{
  
     public function usuario_existe($attribute, $params)
     {
-        $table=  Usuario::find()->where("nombre_usuario=:nom",[":nom"=>  $this->nombre_usuario]);
+        $table=  Users::find()->where(['nombre_usuario'=>$this->nombre_usuario]);
         
-        if($table->count() != 0) $this->addError($attribute,"El nobre de usuario seleccionado existe");
+        if($table->count() != 0) 
+        {
+            $this->addError($attribute,"El nobre de usuario seleccionado existe");
+            return true;
+        }
+        return false;   
     }
 }
