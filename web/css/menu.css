@@ -3,9 +3,6 @@
     padding: 0px;
     text-decoration: none;
 }
-#form_paso_b,#form_paso_c,#deporte2,#deporte3,#categoria2,#categoria3,#form_paso_d,#botones2{
-    display:none;
-}
 
 html, body {
     height: 100%;
@@ -28,7 +25,7 @@ body{
     margin-right: 10px;
 }
 
-.container-fluid .row header{
+.cabecera{
     background: #2c3e50;
     color: #fff;
     height: 70px;
@@ -57,6 +54,8 @@ aside{
     overflow: auto;
     left: 0;
 }
+
+
 
 aside .container-fluid{
     margin: 0px;
@@ -100,41 +99,68 @@ aside .container-fluid li .children{
 
 .menu_movil{display: none;}
 
+#lista_deportista{
+    max-height: 325px;
+    background: white;
+    overflow: auto;
+}
 
-
-article form .form-group >label{
+article label{
     color: white;
     font-size: 17px;
     font-family: arial;
     font-style: italic;
 }
 
-h3{
-    color: #fff;
+h1{
+    color: #CEE7FF;
 }
 
-@media (max-width: 768px){
+article h3{
+    color: #fff;
+    margin-top: 5px;
+}
 
-    body{
+article hr{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#form_paso_b,#form_paso_c,#form_paso_d,#deporte2,#deporte3,#categoria2,#categoria3{
+    display: none;
+}
+
+tbody:nth-child(even){
+    background: #87CEEB;
+}
+
+@media (max-width: 992px){
+
+    body >.container-fluid{
         padding-top: 60px;
         height: 100%;
         width: 100%;
         position: absolute;
     }
 
-    body div header {display: none;}
+    .cabecera {display: none;}
 
     .menu_movil{
         display:block;
         width: 100%;
         position:fixed;
         top:0;
-        background:silver;
+
         z-index: 2000;
         max-height: 55px;
-        height: 55px;
+        height: 60px;
     }
-
+    
+    h3{
+        color: #fff;
+        margin-top: 15px;
+    }
+    
     .menu_movil a{
         color: white;
         font-family: arial;
@@ -178,5 +204,10 @@ h3{
         left:-100%;
         overflow: auto;
         z-index: 2000;
+    }
+
+    .botones
+    {
+        float: right;
     }
 }

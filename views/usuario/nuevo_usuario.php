@@ -12,7 +12,7 @@ $this->title = 'SGD CAE: Nuevo Usuario';
     Html::beginForm(
             Url::toRoute("usuario/nuevo"),
             "post",
-            ['class' => 'row col-xs-12 col-md-5']
+            ['class' => 'row col-xs-12 col-md-4']
     );
 
     ?>

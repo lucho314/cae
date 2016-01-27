@@ -22,7 +22,7 @@ $this->title = 'SGD CAE: Nueva Subcomisión';
         <div class="col-xs-12 col-md-6">
             <div class="form-group">
                 <label for="ingresar nombre:">Nombre:</label>
-                <?= $form->field($model, "nombre")->input("text", ["placeholder" => "Nombre de Usuario","autofocus","class" => "form-control"])->label(false) ?>   
+                <?= $form->field($model, "nombre")->input("text", ["placeholder" => "Nombre","autofocus","class" => "form-control"])->label(false) ?>   
             </div>
 
             <div class="form-group">
@@ -32,7 +32,7 @@ $this->title = 'SGD CAE: Nueva Subcomisión';
 
             <div class="form-group">
                 <label for="ingresar dni">DNI:</label>
-                <?= $form->field($model, "dni")->input("text", ["placeholder" => "DNI", "class" => "form-control"])->label(false) ?>   
+                <?= $form->field($model, "dni")->input("number", ["placeholder" => "DNI", "class" => "form-control"])->label(false) ?>   
             </div>
 
             <div class="form-group">

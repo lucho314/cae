@@ -1,7 +1,6 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
 
 $this->title = 'SGD CAE: Nueva Comision';
 ?>

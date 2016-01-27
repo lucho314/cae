@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 use app\assets\AppAsset;
-use yii\helpers\Url;
+
 
 AppAsset::register($this);
 ?>
@@ -55,7 +55,7 @@ AppAsset::register($this);
         <?php $this->beginBody() ?>
         <div class="container-fluid">
             <div class="row">
-                <header class="col-xs-12">
+                <header class="col-xs-12 cabecera">
                     <img src="../web/imagenes/cae.png" class="logo">
                     <h1>CAE: Club Atlético Estudiante</h1>
                 </header>

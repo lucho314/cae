@@ -22,7 +22,7 @@ body{
     background: rgba(47,79,79,0.8);
 }
 .container .row h3{
-    color:#fff;;
+    color:#fff;
 }
 
 .container .row .form-group >label{
@@ -50,10 +50,9 @@ img{
         background: -moz-linear-gradient(right,rgb(192,192,192),rgb(105,105,105), rgba(0,0,0,255)); /*Fx 3.6-15*/
         background: linear-gradient(to right, rgb(192,192,192),rgb(105,105,105), rgba(0,0,0,255)); /*Standard*/
     }
-
     .container header{display: none;}
 
-    .container section{margin-top: 15px;}
+    .container section{margin-top: 5px;}
 
     .container section h3{display: none;}	
 
@@ -63,4 +62,3 @@ img{
 
     .container section img{display: none;}
 }
-

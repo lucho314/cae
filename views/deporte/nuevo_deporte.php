@@ -1,26 +1,29 @@
 <?php
-use yii\helpers\Html;
+
 use yii\widgets\ActiveForm;
+
+$this->title = 'SGD CAE: Nuevo Deporte';
 ?>
 
-<article class="col-xs-12 col-sm-9 col-md-10">
+<article class="col-xs-12 col-md-10">
     <h3>Crear Deporte:</h3>
-    <?=$msg?>
+    <?= $msg ?>
     <hr>
     <?php
-        $form=ActiveForm::begin([
-            "id"=> "formulario",
-            "class"=>"row col-xs-12 col-md-5",
-            "enableClientValidation" => false,
-            "enableAjaxValidation" => true,
-            "method"=>"post",
-        ])
+    $form = ActiveForm::begin([
+                "method" => "post",
+                "id" => "formulario",
+                "enableClientValidation" => false,
+                "enableAjaxValidation" => true,
+    ]);
     ?>
+    <div class="row col-xs-12 col-md-5">
         <div class="form-group">
-            <label>Nombre del deporte:</label>
-            <?=$form->field($model,"nombre")->input("text",["placeholder"=>"Nombre del Deporte","class"=>"form-control","required","autofocus"])->label(false)?>
+            <label for="ingresar nombre del deporte">Nombre: </label>
+            <?= $form->field($model, "nombre")->input("text", ["placeholder" => "Nombre del Deporte", "class" => "form-control","autofocus"])->label(false) ?>
         </div>
         <input type="submit" value="Guardar" class="btn btn-primary">
-    <?php $form->end()?>
+    </div>
+    <?php $form->end() ?>
 </article>
 

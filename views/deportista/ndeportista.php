@@ -4,12 +4,11 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'SGD CAE: Nuevo Deportista';
 $a = ['no' => 'NO', 'si' => 'SI'];
-$cant=1;
 ?>
 <head>
     <style>
-        .form-group{
-            margin-bottom: 5px;
+        .form-group {
+            margin-bottom:5px;
         }
     </style>
     <script type="text/javascript" src="../web/js/menu.js"></script>
@@ -32,7 +31,7 @@ $cant=1;
                 <div class="col-xs-12 col-md-6">
                     <div class="form-group">
                         <label for="ingresar nombre del deportista">Nombre:</label>
-                        <?= $form->field($model, "nombre")->input("text", ["placeholder" => "Nombre", "class" => "form-control", "autofocus"])->label(false) ?>
+                        <?= $form->field($model, "nombre")->input("text", ["placeholder" => "Nombre", "class" => "form-control", "autofocus" => true])->label(false) ?>
                     </div>
 
                     <div class="form-group">
@@ -82,7 +81,7 @@ $cant=1;
                         <?= $form->field($model, "numero_socio")->input("number", ["placeholder" => "Número de Socio", "class" => "form-control"])->label(false) ?>
                     </div>
 
-                    <a href="javascript:cambiar(2)"  class="btn btn-default" style="float:right;" id="go_paso_b">  Continuar <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a href="javascript:cambiar(2)"  class="btn btn-default" style="float:right;" id="go_paso_b">Continuar<span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
             </div>
         </div>
@@ -184,9 +183,8 @@ $cant=1;
                             <?= $form->field($model, "anemia")->radioList($a, ['style' => 'display:inline;', 'separator' => ' '])->label(false) ?> 
                         </label> 
                     </div>
-
-                    <a href="javascript:cambiar(3)"  class="btn btn-default" style="float:right;">Continuar</a>
-                    <a href="javascript:cambiar(1)"  class="btn btn-default" style="float:right; margin-right:4px;">Atras</a>
+                    <a href="javascript:cambiar(3)"  class="btn btn-default" style="float:right;">Continuar<span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a href="javascript:cambiar(1)"  class="btn btn-default" style="float:right; margin-right:3px;"><span class="glyphicon glyphicon-chevron-left"></span>Atras</a>
                 </div>
             </div>
         </div>
@@ -230,104 +228,105 @@ $cant=1;
                         <label for="ingresar observaciones">Observaciones:</label>
                         <?= $form->field($model, 'observaciones')->textarea(['class' => "form-control", 'style' => "resize:none;", 'rows' => '5'])->label(false) ?>
                     </div>
-                    <a href="javascript:cambiar(4)"  class="btn btn-default" style="float:right;">Continuar</a>
-                    <a href="javascript:cambiar(2)"  class="btn btn-default" style="float:right; margin-right:4px;">Atras</a>
+                    <a href="javascript:cambiar(4)"  class="btn btn-default" style="float:right;">Continuar<span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a href="javascript:cambiar(2)"  class="btn btn-default" style="float:right; margin-right:3px;"><span class="glyphicon glyphicon-chevron-left"></span>Atras</a>
                 </div>
             </div>
         </div>
         <div id="form_paso_d">
-            <h3>Deportes: 4/4</h3>
+            <h3>Crear Deportista: 4/4</h3>
             <hr>
             <div class="row">
                 <div class="col-xs-6">
-                    <label>Deporte:</label>
-                    <?=
-                    $form->field($model, 'deporte1')->dropDownList(
-                            $deporte, [
-                        'prompt' => 'Seleccione Deporte',
-                        'onchange' => '
-                                        $.post( "index.php?r=site/opcion&id=' . '"+$(this).val(), function( data ) {
+                    <div class="form-group">
+                        <label for="seleccionar deporte">Deporte:</label>
+                        <?=
+                        $form->field($model, 'deporte1')->dropDownList(
+                                $deporte, [
+                            'prompt' => 'Seleccione Deporte',
+                            'onchange' => '
+                                        $.post( "index.php?r=deportista/opcion&id=' . '"+$(this).val(), function( data ) {
                                             $( "select#validardeportista-categoria1" ).html( data );
                                         });'
-                    ])->label(false);
-                    ?>
-
+                        ])->label(false);
+                        ?>
+                        <a href="javascript:mostrar(2)" id="boton1" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
 
                     <div id="deporte2">
-                        <label>Deporte:</label>
-                        <?=
-                        $form->field($model, 'deporte2')->dropDownList(
-                                $deporte, [
-                            'prompt' => 'Seleccione Deporte',
-                            'onchange' => '
-                                        $.post( "index.php?r=site/opcion&id=' . '"+$(this).val(), function( data ) {
+                        <div class="form-group">
+                            <label for="seleccionar deporte">Deporte:</label>
+                            <?=
+                            $form->field($model, 'deporte2')->dropDownList(
+                                    $deporte, [
+                                'prompt' => 'Seleccione Deporte',
+                                'onchange' => '
+                                        $.post( "index.php?r=deportista/opcion&id=' . '"+$(this).val(), function( data ) {
                                             $( "select#validardeportista-categoria2" ).html( data );
                                         });'
-                        ])->label(false);
-                        ?>
-
-
+                            ])->label(false);
+                            ?>
+                            <a href="javascript:mostrar(3)" id="boton2" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
+                        </div>
                     </div>
-                    
                     <div id="deporte3">
-                        <label>Deporte:</label>
-                        <?=
-                        $form->field($model, 'deporte3')->dropDownList(
-                                $deporte, [
-                            'prompt' => 'Seleccione Deporte',
-                            'onchange' => '
-                                        $.post( "index.php?r=site/opcion&id=' . '"+$(this).val(), function( data ) {
+                        <div class="form-group">
+                            <label for="seleccionar deporte">Deporte:</label>
+                            <?=
+                            $form->field($model, 'deporte3')->dropDownList(
+                                    $deporte, [
+                                'prompt' => 'Seleccione Deporte',
+                                'onchange' => '
+                                        $.post( "index.php?r=deportista/opcion&id=' . '"+$(this).val(), function( data ) {
                                             $( "select#validardeportista-categoria3" ).html( data );
                                         });'
+                            ])->label(false);
+                            ?>
+                        </div> 
+                    </div>
+                </div> 
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="seleccionar categoria">categoria:</label>
+                        <?=
+                        $form->field($model, 'categoria1')->dropDownList(
+                                [], [
+                            'prompt' => 'Selecione Categoria',
                         ])->label(false);
                         ?>
-
-
                     </div>
-                    
-                </div>
-                <div class="col-xs-6">
-
-                    <?=
-                    $form->field($model, 'categoria1')->dropDownList(
-                            [], [
-                        'prompt' => 'Selecione Categoria',
-                    ]);
-                    ?>
 
                     <div id="categoria2">
+                        <div class="form-group">
+                            <label for="seleccionar deporte">categoria:</label>
+                            <?=
+                            $form->field($model, 'categoria2')->dropDownList(
+                                    [], [
+                                'prompt' => 'Selecione Categoria',
+                            ])->label(false);
+                            ?>
 
-                        <?=
-                        $form->field($model, 'categoria2')->dropDownList(
-                                [], [
-                            'actived' => false,
-                            'prompt' => 'Selecione Categoria',
-                        ]);
-                        ?>
+                        </div> 
                     </div>
+
                     <div id="categoria3">
-                           <?=
-                        $form->field($model, 'categoria3')->dropDownList(
-                                [], [
-                            'actived' => false,
-                            'prompt' => 'Selecione Categoria',
-                        ]);
-                        ?>
-                        
+                        <div class="form-group">
+                            <label for="seleccionar deporte">categoria:</label>
+                            <?=
+                            $form->field($model, 'categoria3')->dropDownList(
+                                    [], [
+                                'prompt' => 'Selecione Categoria',
+                            ])->label(false);
+                            ?>
+                        </div> 
                     </div>
                 </div>
-                    <div id="botones1" class="col-xs-12">
-                    <a href="javascript:cambiar(3)" class="btn btn-default"><--atras</a>
-                     <a href="javascript:mostrar(2)" class="btn btn-danger" >agregar deporte</a>
-                     <input type="submit" value="Guardar" class="btn btn-primary">
-                      </div>
-                    <div class="col-xs-12" id="botones2">
-                    <a href="javascript:cambiar(3)" class="btn btn-default"><--atras</a>
-                    <a href="javascript:mostrar(3)" class="btn btn-danger" id="boton3">agregar deporte</a>
-                     <input type="submit" value="Guardar" class="btn btn-primary">
-                      </div>
+                <div class="col-xs-12">
+                    <input type="submit" value="Guardar" class="btn btn-primary" style="float:right;">
+                    <a href="javascript:cambiar(3)"  class="btn btn-default" style="float:right;margin-right: 3px;"><span class="glyphicon glyphicon-chevron-left"></span>Atras</a>
+                </div>
             </div>
         </div>
     </div>
-    
-<?php $form->end() ?>
+    <?php $form->end() ?>
+</article>

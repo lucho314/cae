@@ -1,6 +1,5 @@
 <?php
 
-
 use yii\widgets\ActiveForm;
 
 $this->title = 'SGD CAE: Nueva Clase';

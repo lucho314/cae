@@ -55,7 +55,7 @@ AppAsset::register($this);
         <?php $this->beginBody() ?>
         <div class="container-fluid">
             <div class="row">
-                <header class="col-xs-12">
+                <header class="col-xs-12 cabecera">
                     <img src="../web/imagenes/cae.png" class="logo">
                     <h1>CAE: Club Atlético Estudiante</h1>
                 </header>
@@ -76,7 +76,7 @@ AppAsset::register($this);
                         </li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-align-left"></span>Estadisticas</a></li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-search"></span>Busqueda</a></li>
-                        <li class="row"><a href="/basic/web/index.php?r=usuario%2Flogout" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
+                        <li class="row"><a href="/web/basic/web/index.php?r=usuario%2Flogout" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
                     </ul>		
                 </aside>
                 <?= $content ?>
