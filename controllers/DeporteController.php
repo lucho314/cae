@@ -138,15 +138,15 @@ class DeporteController extends Controller
                     return $this->render("pruebacat",['profesor'=>$profesor]);
                 }
 
-    public function behaviors()
+     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['crear','modificar','eliminar'],
+                'only' => ['crear','modificar','eliminar','elejir'],
                 'rules' => [
                     [
-                        'actions' => ['crear','modificar','eliminar'],
+                        'actions' => ['crear','modificar','eliminar','elejir'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) 
@@ -154,9 +154,36 @@ class DeporteController extends Controller
                           return User::isUserAdmin(Yii::$app->user->identity->id);
                         }
                     ],
-                    
+                            
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) 
+                        {
+                            return User::isUserProfe(Yii::$app->user->identity->id);
+                        }
+
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) 
+                        {
+                            return User::isUserSubcomision(Yii::$app->user->identity->id);
+                        }
+
+                    ]
                 ],
             ],
-          ];
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
     }
+     
 }
