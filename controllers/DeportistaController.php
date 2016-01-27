@@ -19,6 +19,7 @@ use app\models\Planilla;
 use app\models\ValidarDeportistamodif;
 use app\models\Deporte;
 use app\models\Categoria;
+use app\models\User;
 
 class DeportistaController extends Controller {
 
