@@ -18,9 +18,10 @@ $a = ['no' => 'NO', 'si' => 'SI'];
     <?php
     $form = ActiveForm::begin([
                 "id" => "formulario",
-                "enableClientValidation" => false,
+                "enableClientValidation" => true,
                 "enableAjaxValidation" => true,
-                "method" => "post"
+                "method" => "post",
+                "options" => ["enctype" => "multipart/form-data"],
             ])
     ?>
     <div class="row col-xs-12">
@@ -29,6 +30,10 @@ $a = ['no' => 'NO', 'si' => 'SI'];
             <hr>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="Seleccione foto">Seleccione foto:</label>
+                        <?= $form->field($model, "file[]",['enableAjaxValidation' => false])->fileInput(['multiple' => true])->label(false) ?>
+                    </div>
                     <div class="form-group">
                         <label for="ingresar nombre del deportista">Nombre:</label>
                         <?= $form->field($model, "nombre")->input("text", ["placeholder" => "Nombre", "class" => "form-control", "autofocus" => true])->label(false) ?>

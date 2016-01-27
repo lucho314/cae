@@ -2,10 +2,7 @@
 
 namespace app\models;
 
-use yii;
 use yii\base\Model;
-use app\models\Persona;
-use app\models\Deportista;
 
 Class ValidarDeportista extends model {
     
@@ -53,13 +50,25 @@ Class ValidarDeportista extends model {
     public $categoria1;
     public $categoria2;
     public $categoria3;
-
     public $deportista;
 
 
-    public function rules() {
+    public $file;
 
+    public function rules() {
         return [
+            ['file', 'file',
+                'skipOnEmpty' => false,
+                'uploadRequired' => 'No has seleccionado ningún archivo', //Error
+                'maxSize' => 1024 * 1024 * 1, //1 MB
+                'tooBig' => 'El tamaño máximo permitido es 1MB', //Error
+                'minSize' => 10, //10 Bytes
+                'tooSmall' => 'El tamaño mínimo permitido son 10 BYTES', //Error
+                'extensions' => 'JPG',
+                'wrongExtension' => 'El archivo {file} no contiene una extensión permitida {extensions}', //Error
+                'maxFiles' => 4,
+                'tooMany' => 'El máximo de archivos permitidos son {limit}', //Error
+            ],
             [['nombre', 'apellido', 'domicilio', 'telefono', 'dni', 'grupo_sanguineo', 'medico_cabecera', 'email', 'obra_social', 'numero_socio','observaciones'], 'required', 'message' => 'Campo requerido'],
             ['nombre', 'match', 'pattern' => "/^.{3,20}$/", 'message' => 'Mínimo 3 y máximo 20 caracteres'],
             ['nombre', 'match', 'pattern' => "/^[a-záéíóúñ\s]+$/i", 'message' => 'Sólo se aceptan letras'],
@@ -110,9 +119,7 @@ Class ValidarDeportista extends model {
             ['telefono2', 'number', 'message' => 'solo se aceptan numeros'],
             ['telefono2', 'match', 'pattern' => "/^.{10,}$/", 'message' => 'Numero de telefono incorrecto'],
             [['deporte2','deporte3'], 'compare', 'compareAttribute' => 'deporte1','operator' => '!==', 'message' => 'No se pueden repetir los deportes'],
-            [['deporte2','deporte1'], 'compare', 'compareAttribute' => 'deporte3','operator' => '!==', 'message' => 'No se pueden repetir los deportes'],
-             
-             
+            [['deporte2','deporte1'], 'compare', 'compareAttribute' => 'deporte3','operator' => '!==', 'message' => 'No se pueden repetir los deportes'],  
         ];
     }
     

@@ -20,6 +20,7 @@ use app\models\ValidarDeportistamodif;
 use app\models\Deporte;
 use app\models\Categoria;
 use app\models\User;
+use yii\web\UploadedFile;
 
 class DeportistaController extends Controller {
 
@@ -76,7 +77,12 @@ class DeportistaController extends Controller {
         }
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->file = UploadedFile::getInstances($model, 'file');
             if ($model->validate()) {
+                foreach ($model->file as $file) {
+                    $file->name=$model->dni;
+                    $file->saveAs('archivos/' . $file->baseName);
+                }
                 $categorias = ['1' => $model->categoria1, '2' => $model->categoria2, '3' => $model->categoria3];
                 $connection = \Yii::$app->db;
                 $transaction = $connection->beginTransaction();
