@@ -24,55 +24,27 @@ class UsuarioController extends Controller
 {   
     
     public $layout;
-   
-    public function actionIndex()
+    
+      public function actionAdmin()
     {
-        return $this->redirect(["usuario/login"]); 
+        $this->layout="mainadmin";
+        $nombre=Yii::$app->user->identity->nombre_usuario;
+        return $this->render("administrador",['nombre'=>$nombre]);
     }
-
-    public function actionLogin()
+    public function actionProfesor()
     {
-        $nombre=null;
-           if (!\Yii::$app->user->isGuest)
-           {
-               $nombre=$nombre=Yii::$app->user->identity->nombre_usuario;
-               if(User::isUserAdmin(Yii::$app->user->identity->id))
-               {
-                   $this->redirect(['usuario/admin']);
-                  
-               }
-               if(User::isUserProfe(Yii::$app->user->identity->id))
-               {
-                  $this->redirect(['usuario/profesor']);
-               }
-               if(User::isUserSubcomision(Yii::$app->user->identity->id))
-               {
-                   $this->redirect(['usuario/subcomision']);
-               }
-           }
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login())
-        {
-            $nombre=Yii::$app->user->identity->nombre_usuario;
-               if(User::isUserAdmin(Yii::$app->user->identity->id))
-               {
-                   $this->redirect(['usuario/admin']);
-               }
-               if(User::isUserProfe(Yii::$app->user->identity->id))
-               {
-                   $this->redirect(['usuario/profesor']);
-               }
-               if(User::isUserSubcomision(Yii::$app->user->identity->id))
-               {
-                   $this->redirect(['usuario/subcomision']);
-               }
-        }
-        
-        
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        $this->layout="mainprofe";
+        $nombre=Yii::$app->user->identity->nombre_usuario;
+        return $this->render("profesor",['nombre'=>$nombre]);
     }
+    public function actionSubcomision()
+    {
+        $this->layout="subcomision";
+        $nombre=Yii::$app->user->identity->nombre_usuario;
+        return $this->render("subcomision",['nombre'=>$nombre]);
+    } 
+    
+ 
     private function randKey($str='', $long=0)
     {
         $key = null;
@@ -143,8 +115,8 @@ public function actionNuevo()
                     $connection->createCommand($sql2)->execute();
                     $transaction->commit();
                     
-                 
-                    $this->Correo($model);
+                  
+                     $this->Correo($model);
                     $msg="Registracion realizada con exito";
                     $model->nombre=null;
                     $model->apellido=null;
@@ -279,7 +251,7 @@ public function actionNuevo()
     
     public function Correo($model)
     {
-                           $subject = "Confirmar registro";
+                          $subject = "Confirmar registro";
                     $body = "<h1>Ah sido dado de alta en la poronga del cae</h1>";
                     $body .= "<a >Usuario: $model->nombre_usuario</a>";
                     $body .="<a>Contraseña: $model->contrasenia </a>"; 
@@ -342,7 +314,7 @@ public function actionNuevo()
     {
         Yii::$app->user->logout();
 
-        $this->redirect(['/usuario/login']);
+        return $this->redirect(["usuario/login"]);
     }
     
     
@@ -489,25 +461,54 @@ public function actionNuevo()
         return $this->render("recuperar_contrasenia", ["model" => $model, "msg" => $msg]);
             
     }
+     
+  public function actionLogin()
+    {
+        $nombre=null;
+           if (!\Yii::$app->user->isGuest)
+           {
+               $nombre=$nombre=Yii::$app->user->identity->nombre_usuario;
+               if(User::isUserAdmin(Yii::$app->user->identity->id))
+               {
+                   $this->redirect(['usuario/admin']);
+                  
+               }
+               if(User::isUserProfe(Yii::$app->user->identity->id))
+               {
+                  $this->redirect(['usuario/profesor']);
+               }
+               if(User::isUserSubcomision(Yii::$app->user->identity->id))
+               {
+                   $this->redirect(['usuario/subcomision']);
+               }
+           }
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login())
+        {
+            $nombre=Yii::$app->user->identity->nombre_usuario;
+               if(User::isUserAdmin(Yii::$app->user->identity->id))
+               {
+                   $this->redirect(['usuario/admin']);
+               }
+               if(User::isUserProfe(Yii::$app->user->identity->id))
+               {
+                   $this->redirect(['usuario/profesor']);
+               }
+               if(User::isUserSubcomision(Yii::$app->user->identity->id))
+               {
+                   $this->redirect(['usuario/subcomision']);
+               }
+        }
+        return $this->render('login',['model'=>$model]);
+
+
+    }
+ 
     
-    public function actionAdmin()
-    {
-        $this->layout="mainadmin";
-        $nombre=Yii::$app->user->identity->nombre_usuario;
-        return $this->render("administrador",['nombre'=>$nombre]);
-    }
-    public function actionProfesor()
-    {
-        $this->layout="mainprofe";
-        $nombre=Yii::$app->user->identity->nombre_usuario;
-        return $this->render("profesor",['nombre'=>$nombre]);
-    }
-    public function actionSubcomision()
-    {
-        $this->layout="mainsubcomision";
-        $nombre=Yii::$app->user->identity->nombre_usuario;
-        return $this->render("subcomision",['nombre'=>$nombre]);
-    }       
-      
+    
+    
+    
+    
+    
 }                
                 
