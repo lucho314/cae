@@ -21,8 +21,11 @@ use app\models\Profesor;
 use app\models\Categoria;
 use app\models\Convocados;
 use app\models\ValidarBusqueda;
+use app\models\Vdep_Cat;
 
 class EventoController extends Controller {
+
+    public $layout;
 
     public function behaviors() {
         return [
@@ -76,6 +79,7 @@ class EventoController extends Controller {
             return ActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post())) {
+
             if ($model->validate()) {
                 $tabla = new Evento;
                 $tabla->nombre = $model->nombre;
@@ -84,19 +88,20 @@ class EventoController extends Controller {
                 $tabla->id_profesor_titular = $model->id_profesor_titular;
                 $tabla->id_profesor_suplente = $model->id_profesor_suplente;
                 $tabla->id_deporte = $model->id_deporte;
-                $tabla->id_categoria = $model->id_categoria;
-                $tabla->id_lista = $model->id_lista;
                 if ($tabla->insert()) {
-                    $msg = "Evento registrado con exito!";
-
                     $model->nombre = null;
                     $model->condicion = null;
                     $model->fecha = null;
                     $model->id_profesor_titular = null;
                     $model->id_profesor_suplente = null;
+                    if ($model->convocados == 1) {
+                        session_start();
+                        $_SESSION['deporte'] = $model->id_deporte;
+                        $_SESSION['id_evento'] = Yii::$app->db->getLastInsertID('evento');
+                        $model->id_deporte = null;
+                        $this->redirect(["evento/clista"]);
+                    }
                     $model->id_deporte = null;
-                    $model->id_categoria = null;
-                    $model->id_lista = null;
                 } else {
                     $msg = "No se pudo registrar Clase";
                 }
@@ -104,10 +109,10 @@ class EventoController extends Controller {
         }
         $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre');
         $profesor = ArrayHelper::map(Profesor::find()->all(), 'dni', 'nombre');
-        $categoria = ArrayHelper::map(Categoria::find()->all(), 'id_categoria', 'nombre');
+        $categoria = ArrayHelper::map(Categoria::find()->all(), 'id_categoria', 'nombre_categoria');
         $convocados = ArrayHelper::map(Convocados::find()->all(), 'id_lista', 'nombre');
 
-        return $this->render("prubar_evento", ['model' => $model, 'msg' => $msg, "profesor" => $profesor,
+        return $this->render("crear", ['model' => $model, 'msg' => $msg, "profesor" => $profesor,
                     "categoria" => $categoria, "deporte" => $deporte, "convocados" => $convocados,
         ]);
     }
@@ -247,13 +252,83 @@ class EventoController extends Controller {
             if ($tabla->delete()) {
                 $msg = "Eliminacion realizada con exito!";
                 $this->redirect(["evento/buscar", 'msg' => $msg]);
-                
             } else {
                 $msg = "No se pudo realizar la eliminacion";
             }
         }
-        
+
         return $this->render("buscar", ["msg" => $msg]);
+    }
+
+    public function actionClista() {
+        $this->layout = "mainprofe";
+        $msg = null;
+        session_start();
+        $model = array();
+        if (isset($_SESSION['deporte'])) {
+            $deporte = $_SESSION['deporte'];
+        } else {
+            $this->redirect(['evento/crear']);
+        }
+        $sql = "select nombre, dni,nombre_categoria from vdep_cat where id_deporte=$deporte";
+        if (!isset($_SESSION['dni'])) {
+            $model = Yii::$app->db->createCommand($sql)->queryAll();
+        } else {
+
+            $datos = \Yii::$app->db->createCommand($sql)->queryAll();
+            foreach ($datos as $val) {
+
+                if (!in_array($val['dni'], $_SESSION['dni'])) {
+                    $model[] = array('nombre' => $val['nombre'], 'dni' => $val['dni'], 'nombre_categoria' => $val['nombre_categoria']);
+                }
+            }
+        }
+        return $this->render('clista', ['model' => $model, 'msg' => $msg]);
+    }
+
+    public function actionAgregar() {
+        session_start();
+        $_SESSION['dni'][] = $_POST['id'];
+        $hola = $_POST['id'];
+    }
+
+    public function actionQuitar() {
+        session_start();
+        if (is_numeric($_POST['id'])) {
+            $aux[] = $_POST['id'];
+            $array = array_diff($_SESSION['dni'], $aux);
+            unset($_SESSION['dni']);
+            foreach ($array as $val) {
+                $_SESSION['dni'][] = $val;
+            }
+        }
+    }
+
+    public function actionConflista() {
+        $this->layout = "mainprofe";
+        session_start();
+        if (isset($_REQUEST['id'])) {
+            if ($_REQUEST['id'] == 'confirmar') {
+                $tabla = Vdep_Cat::find()->where(['IN', 'dni', $_SESSION['dni']])->andWhere(['id_deporte'=>$_SESSION['deporte']])->all();
+                $convocados = new Convocados;
+                $id_evento = $_SESSION['id_evento'];
+                $connection = \Yii::$app->db;
+                $transaction = $connection->beginTransaction();
+                foreach ($tabla as $valor) {
+                    $dni = $valor['dni'];
+                    $nombre = $valor['nombre'];
+                    $connection->createCommand("insert into convocados (dni,nombre,id_evento) VALUES ('$dni','$nombre','$id_evento')")->execute();
+                }
+                $transaction->commit();
+                unset($_SESSION['dni']);
+                unset($_SESSION['id_evento']);
+                unset($_SESSION['deporte']);
+                $this->redirect(['evento/crear']);
+            }
+        } else {
+            $model = \app\models\Vdep_Cat::find()->where(['id_deporte' => $_SESSION['deporte']])->andWhere(['IN', 'dni', $_SESSION['dni']])->all();
+            return $this->render('confirmar', ['model' => $model]);
+        }
     }
 
 }
