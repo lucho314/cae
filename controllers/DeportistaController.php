@@ -269,30 +269,98 @@ class DeportistaController extends Controller {
                 $model->domicilio2 = $table->domicilio2;
                 $model->telefono2 = $table->telefono2;
                 $model->observaciones = $table->observaciones;
+                $table = Deportista_cat::find()->where(['dni' => $model->dni])->count();
+                $cant = $table;
+                switch ($table) {
+                    case 1:
+                        $table = Deportista_cat::find()->where(['dni' => $model->dni])->offset(0)->one();
+                        $model->deporte1 = $table->id_deporte;
+                        $model->categoria1 = $table->id_categoria;
+                        $model->aux1 = $model->categoria1;
+                        break;
+                        ;
+                    case 2;
+                        $table = Deportista_cat::find()->where(['dni' => $model->dni])->offset(0)->one();
+                        $model->deporte1 = $table->id_deporte;
+                        $model->categoria1 = $table->id_categoria;
+                        $table = Deportista_cat::find()->where(['dni' => $model->dni])->offset(1)->one();
+                        $model->deporte2 = $table->id_deporte;
+                        $model->categoria2 = $table->id_categoria;
+                        $model->aux1 = $model->categoria1;
+                        $model->aux2 = $model->categoria2;
+                        break;
+                    case 3:
+                        $table = Deportista_cat::find()->where(['dni' => $model->dni])->offset(0)->one();
+                        $model->deporte1 = $table->id_deporte;
+                        $model->categoria1 = $table->id_categoria;
+                        $table = Deportista_cat::find()->where(['dni' => $model->dni])->offset(1)->one();
+                        $model->deporte2 = $table->id_deporte;
+                        $model->categoria2 = $table->id_categoria;
+                        $table = Deportista_cat::find()->where(['dni' => $model->dni])->offset(2)->one();
+                        $model->deporte3 = $table->id_deporte;
+                        $model->categoria3 = $table->id_categoria;
+                        $model->aux1 = $model->categoria1;
+                        $model->aux2 = $model->categoria2;
+                        $model->aux3 = $model->categoria3;
+                        break;
             }
         }
+        }
+
+
 
         if (($model->load(Yii::$app->request->post()))) {
             if ($model->validate()) {
+
+                $datos = array
+                    (
+                    "0" => array(
+                        'deporte' => $model->deporte1,
+                        'categoria' => $model->categoria1,
+                        'aux' => $model->aux1
+                    ),
+                    "1" => array
+                        (
+                        'deporte' => $model->deporte1,
+                        'categoria' => $model->categoria1,
+                        'aux' => $model->aux1,
+                    ),
+                    "2" => array
+                        (
+                        'deporte' => $model->deporte1,
+                        'categoria' => $model->categoria1,
+                        'aux' => $model->aux1,
+                    )
+                );
                 $connection = \Yii::$app->db;
                 $transaction = $connection->beginTransaction();
 
-                $sql1 = "UPDATE persona SET dni='$model->dni',nombre='$model->nombre',apellido='$model->apellido' where persona.dni='$model->dni'";
+                $sql1 = "UPDATE persona SET dni='$model->dni',nombre='$model->nombre',apellido='$model->apellido' where persona.dni='$model->dni' ";
 
                 $sql2 = "update planilla,deportista set medico_cabecera='$model->medico_cabecera',grupo_sanguineo='$model->grupo_sanguineo',obra_social='$model->obra_social',medicamento='$model->medicamento',desc_medicamento='$model->desc_medicamento',
                     alergia='$model->alergia',desc_alergia='$model->desc_alergia',anemia='$model->anemia',enf_cardiologica='$model->enf_cardiologica',desc_cardiologia='$model->desc_cardiologia',asma='$model->asma',desc_asma='$model->desc_asma',presion='$model->presion',convulsiones='$model->convulsiones',ultima_convulsion='$model->ultima_convulsion',
                        trastornos_hemorragicos='$model->trastornos_hemorragicos',fuma='$model->fuma',cuanto_fuma='$model->cuanto_fuma',diabetes='$model->diabetes',desc_diabetes='$model->desc_diabetes',tratamiento='$model->tratamiento',desc_tratamiento='$model->desc_tratamiento',internaciones='$model->internaciones',desc_internacion='$model->desc_internacion',nombreyapellido1='$model->nombreyapellido1',domicilio1='$model->domicilio1',
                             telefono1='$model->telefono1',nombreyapellido2='$model->nombreyapellido2',domicilio2='$model->domicilio2',telefono2='$model->telefono2',observaciones='$model->observaciones' where planilla.id_planilla=deportista.id_planilla";
 
-                $sql3 = "UPDATE deportista SET numero_socio='$model->numero_socio' where deportista.dni='$model->dni'";
+                foreach ($datos as $val) {
+                    if ($val['categoria'] != "") {
+                        $deporte = $val['deporte'];
+                        $categoria = $val['categoria'];
+                        $aux = $val['aux'];
+                        $connection->createCommand("update deportista_categoria set id_categoria=$categoria, id_deporte=$deporte where dni=$model->dni and id_categoria=$aux")->execute();
+                    }
+                }
+
 
                 try {
                     $connection->createCommand($sql1)->execute();
                     $connection->createCommand($sql2)->execute();
+
+                    $sql3 = "UPDATE deportista SET numero_socio='$model->numero_socio' where deportista.dni='$model->dni'";
                     $connection->createCommand($sql3)->execute();
                     $transaction->commit();
 
-                    $msg = "Registracion realizada con exito";
+                    $msg = "Modificacion realizada con exito realizada con exito";
                     $model->nombre = null;
                     $model->apellido = null;
                     $model->dni = NULL;
@@ -341,7 +409,9 @@ class DeportistaController extends Controller {
                 }
             }
         }
-        return $this->render("modificar_deportista", ['msg' => $msg, 'model' => $model]);
+        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre');
+        $categoria = ArrayHelper::map(Categoria::find()->all(), 'id_categoria', 'nombre_categoria');
+        return $this->render("modificar_deportista", ["model" => $model, "msg" => $msg, 'deporte' => $deporte, 'categoria' => $categoria,'cant'=>$cant]);
     }
 
     public function actionBuscar($msg=null) {
