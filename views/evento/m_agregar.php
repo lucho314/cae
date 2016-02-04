@@ -36,7 +36,7 @@ use yii\helpers\Url;
 
 
 
-        <a href="<?= Url::toRoute(["evento/conflista"]) ?>"  class="btn btn-default" style="float:right;" id="go_paso_b">Confirmar<span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a href="<?= Url::toRoute(["evento/modificarlista"]) ?>"  class="btn btn-default" style="float:right;" id="go_paso_b">Confirmar<span class="glyphicon glyphicon-chevron-right"></span></a>
          <a href="<?= Url::toRoute(["evento/crear"]) ?>"  class="btn btn-danger">Cancelar</a>
     </div>
 </article>

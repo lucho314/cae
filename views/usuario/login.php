@@ -1,3 +1,4 @@
+
 <?php
 /* @var $this yii\web\View */
 use yii\widgets\ActiveForm;
@@ -9,7 +10,11 @@ $this->title = 'SGD: Login';
             "enableClientValidation" => true,
          ]);
 ?>
+<noscript>
 
+<META HTTP-EQUIV="REFRESH" CONTENT="0;URL=<?=Url::toRoute(["usuario/error"])?>"> 
+
+</noscript>
 <head>
     <link rel="stylesheet" type="text/css" href="../web/css/login.css">
 </head>

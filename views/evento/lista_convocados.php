@@ -4,9 +4,6 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
-<head>
-    <script type="text/javascript" src="../web/js/jquery.js"></script>
-</head>
 <article class="col-xs-12 col-md-10">
     <div class="row">
         <div class="col-xs-12">
@@ -25,21 +22,19 @@ use yii\helpers\Url;
                                 <td> <?= $valor['nombre'] ?></td>
                                 <td><?= $valor['dni'] ?> </td>
                                 <td><?= $valor['nombre_categoria'] ?> </td>
-                                <td> <input type="button" value="Convocar" onclick="Eliminar(this.parentNode.parentNode.rowIndex,<?= $valor['dni'] ?>)"/></td>
+                              <td> <input type="button" value="Eliminar" onclick="Eliminar(this.parentNode.parentNode.rowIndex,<?= $valor['dni'] ?>)"/></td>
                             </tr>   
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <a href="<?= Url::toRoute(["evento/modif_agregar"]) ?>" class="btn btn-default">Agregar</a>
+                <a href="<?= Url::toRoute(["evento/modificarlista","sacar"=>'si']) ?>" class="btn btn-default">confirmar</a>
             </div>
+
         </div>
-
-
-
-
-        <a href="<?= Url::toRoute(["evento/conflista"]) ?>"  class="btn btn-default" style="float:right;" id="go_paso_b">Confirmar<span class="glyphicon glyphicon-chevron-right"></span></a>
-         <a href="<?= Url::toRoute(["evento/crear"]) ?>"  class="btn btn-danger">Cancelar</a>
     </div>
 </article>
+
 <script type="text/javascript">
     function Eliminar(i, dni) {
 
@@ -49,7 +44,7 @@ use yii\helpers\Url;
         var dataString = 'id=' + dni;
         $.ajax({
             type: "POST",
-            url: "<?= Url::toRoute(["evento/agregar"]) ?>",
+            url: "<?= Url::toRoute(["evento/quitar"]) ?>",
             data: dataString
         });
     }

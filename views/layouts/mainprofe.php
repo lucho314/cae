@@ -17,6 +17,7 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <script type="text/javascript" src="../web/js/jquery.js"></script>
         <script type="text/javascript" src="../web/js/menu.js"></script>
+        <link href='../web/imagenes/cae.ico' rel='shortcut icon' type='image/x-icon'>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
         <script type="text/javascript">
@@ -66,17 +67,17 @@ AppAsset::register($this);
                 </header>
                 <aside class="col-xs-12 col-md-2 menu">
                     <ul class="container-fluid">
-                        <li class="row"><a href=""><span class="glyphicon glyphicon-list-alt"></span>Asistencia</a></li>
+                        <li class="row"><a href="<?=Url::toRoute("clase/crear")?>"><span class="glyphicon glyphicon-list-alt"></span>Asistencia</a></li>
                         <li class="row submenu"><a href="javascript:void(0);"><span class="glyphicon glyphicon-calendar"></span>Eventos<span class="glyphicon glyphicon-menu-down"></span></a>
                             <ul class="children">
-                                <li><a href=""><span class="glyphicon glyphicon-plus"></span>Alta</a></li>
+                                <li><a href="<?=Url::toRoute("evento/crear")?>"><span class="glyphicon glyphicon-plus"></span>Alta</a></li>
                                 <li><a href=""><span class="glyphicon glyphicon-ok"></span>Modificar</a></li>
                                 <li><a href=""><span class="glyphicon glyphicon-remove"></span>Eliminar</a></li>
                             </ul>
                         </li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-align-left"></span>Estadisticas</a></li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-search"></span>Busqueda</a></li>
-                        <li class="row"><a href="/web/basic/web/index.php?r=usuario%2Flogout" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
+                        <li class="row"><a href="<?=Url::toRoute("usuario/logout")?>" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
                     </ul>		
                 </aside>
                 <?= $content ?>

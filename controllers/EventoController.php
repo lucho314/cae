@@ -68,12 +68,18 @@ class EventoController extends Controller {
         ];
     }
 
-    public function actionCrear() {
+    public function actionCrear($msg = null) {
 
         $this->layout = 'mainadmin';
         $msg = null;
         $model = new ValidarEvento;
-
+        session_start();
+        if (isset($_SESSION['dni'])) {
+            unset($_SESSION['dni']);
+        }
+        if (isset($_SESSION['deporte'])) {
+            unset($_SESSION['deporte']);
+        }
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
@@ -95,7 +101,6 @@ class EventoController extends Controller {
                     $model->id_profesor_titular = null;
                     $model->id_profesor_suplente = null;
                     if ($model->convocados == 1) {
-                        session_start();
                         $_SESSION['deporte'] = $model->id_deporte;
                         $_SESSION['id_evento'] = Yii::$app->db->getLastInsertID('evento');
                         $model->id_deporte = null;
@@ -107,7 +112,7 @@ class EventoController extends Controller {
                 }
             }
         }
-        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre');
+        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre_deporte');
         $profesor = ArrayHelper::map(Profesor::find()->all(), 'dni', 'nombre');
         $categoria = ArrayHelper::map(Categoria::find()->all(), 'id_categoria', 'nombre_categoria');
         $convocados = ArrayHelper::map(Convocados::find()->all(), 'id_lista', 'nombre');
@@ -129,17 +134,17 @@ class EventoController extends Controller {
                 $search_desde = Html::encode($form->desde);
                 $search_hasta = Html::encode($form->hasta);
                 if ($search == "") {
-                    $sql = "select id_evento, nombre,fecha "
+                    $sql = " id_deporte,id_evento, nombre,fecha "
                             . "from evento "
                             . "  where  "
                             . "fecha BETWEEN '$search_desde' AND '$search_hasta'  "
                             . "group by fecha";
                 } else if ($search_desde == "") {
-                    $sql = "select id_evento, nombre,fecha "
+                    $sql = "select id_deporte,id_evento, nombre,fecha "
                             . "from evento "
                             . " where nombre like '%$search%'  ";
                 } else {
-                    $sql = "select id_evento, nombre,fecha "
+                    $sql = "select id_deporte, id_evento, nombre,fecha "
                             . "from evento "
                             . "  where nombre like '%$search%' and "
                             . "fecha BETWEEN '$search_desde' AND '$search_hasta'  "
@@ -163,10 +168,10 @@ class EventoController extends Controller {
 
             $count = clone $table;
             $pages = new Pagination([
-                "pageSize" => 1,
+                "pageSize" => 10,
                 "totalCount" => $count->count(),
             ]);
-            $sql = "select id_evento,nombre,fecha "
+            $sql = "select id_deporte, id_evento,nombre,fecha "
                     . "from evento"
                     . " "
                     . "LIMIT $pages->limit OFFSET $pages->offset";
@@ -191,8 +196,7 @@ class EventoController extends Controller {
                 $model->id_profesor_titular = $tabla->id_profesor_titular;
                 $model->id_profesor_suplente = $tabla->id_profesor_suplente;
                 $model->id_deporte = $tabla->id_deporte;
-                $model->id_categoria = $tabla->id_categoria;
-                $model->id_lista = $tabla->id_lista;
+                $model->convocados = 1;
             }
         }
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
@@ -201,7 +205,9 @@ class EventoController extends Controller {
         }
 
         if (($model->load(Yii::$app->request->post()))) {
+            $msg = "askdjla";
             if ($model->validate()) {
+
                 $tabla = Evento::findOne($model->id_evento);
                 $tabla->nombre = $model->nombre;
                 $tabla->condicion = $model->condicion;
@@ -209,8 +215,7 @@ class EventoController extends Controller {
                 $tabla->id_profesor_titular = $model->id_profesor_titular;
                 $tabla->id_profesor_suplente = $model->id_profesor_suplente;
                 $tabla->id_deporte = $model->id_deporte;
-                $tabla->id_categoria = $model->id_categoria;
-                $tabla->id_lista = $model->id_lista;
+
 
 
                 if ($tabla->update()) {
@@ -222,8 +227,6 @@ class EventoController extends Controller {
                     $model->id_profesor_titular = null;
                     $model->id_profesor_suplente = null;
                     $model->id_deporte = null;
-                    $model->id_categoria = null;
-                    $model->id_lista = null;
                     $this->redirect(["evento/buscar", 'msg' => $msg]);
                 } else {
                     $msg = "no se pudo actualizar";
@@ -234,12 +237,12 @@ class EventoController extends Controller {
         }
 
 
-        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre');
+        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre_deporte');
         $profesor = ArrayHelper::map(Profesor::find()->all(), 'dni', 'nombre');
-        $categoria = ArrayHelper::map(Categoria::find()->all(), 'id_categoria', 'nombre');
+        $categoria = ArrayHelper::map(Categoria::find()->all(), 'id_categoria', 'nombre_categoria');
         $convocados = ArrayHelper::map(Convocados::find()->all(), 'id_lista', 'nombre');
 
-        return $this->render("probar_evento_modif", ['model' => $model, 'msg' => $msg, "profesor" => $profesor,
+        return $this->render("modificar", ['model' => $model, 'msg' => $msg, "profesor" => $profesor,
                     "categoria" => $categoria, "deporte" => $deporte, "convocados" => $convocados,
         ]);
     }
@@ -309,7 +312,7 @@ class EventoController extends Controller {
         session_start();
         if (isset($_REQUEST['id'])) {
             if ($_REQUEST['id'] == 'confirmar') {
-                $tabla = Vdep_Cat::find()->where(['IN', 'dni', $_SESSION['dni']])->andWhere(['id_deporte'=>$_SESSION['deporte']])->all();
+                $tabla = Vdep_Cat::find()->where(['IN', 'dni', $_SESSION['dni']])->andWhere(['id_deporte' => $_SESSION['deporte']])->all();
                 $convocados = new Convocados;
                 $id_evento = $_SESSION['id_evento'];
                 $connection = \Yii::$app->db;
@@ -329,6 +332,84 @@ class EventoController extends Controller {
             $model = \app\models\Vdep_Cat::find()->where(['id_deporte' => $_SESSION['deporte']])->andWhere(['IN', 'dni', $_SESSION['dni']])->all();
             return $this->render('confirmar', ['model' => $model]);
         }
+    }
+
+    public function actionVerlista($id_evento, $id_deporte) {
+        $table = Convocados::find()->where(["id_evento" => $id_evento])->all();
+        session_start();
+        $dni = array();
+
+        foreach ($table as $val) {
+            $dni[] = $val['dni'];
+        }
+        $table = Vdep_Cat::find()->where(['IN', 'dni', $dni])->andWhere(['id_deporte' => $id_deporte])->all();
+        foreach ($table as $dni) {
+            $_SESSION['dni'][] = $dni['dni'];
+        }
+
+        $_SESSION['id_deporte'] = $id_deporte;
+        $_SESSION['id_evento'] = $id_evento;
+        return $this->render("lista_convocados", ['model' => $table]);
+    }
+
+    public function actionModif_agregar() {
+        session_start();
+        $deporte = $_SESSION['id_deporte'];
+        $sql = "select nombre, dni,nombre_categoria from vdep_cat where id_deporte=$deporte";
+
+        if (!isset($_SESSION['dni'])) {
+            $model = Yii::$app->db->createCommand($sql)->queryAll();
+        } else {
+
+            $datos = \Yii::$app->db->createCommand($sql)->queryAll();
+            foreach ($datos as $val) {
+
+                if (!in_array($val['dni'], $_SESSION['dni'])) {
+                    $model[] = array('nombre' => $val['nombre'], 'dni' => $val['dni'], 'nombre_categoria' => $val['nombre_categoria']);
+                }
+            }
+        }
+        return $this->render("m_agregar", ["model" => $model]);
+    }
+
+    public function actionModificarlista($sacar = null) {
+        $this->layout = "mainprofe";
+        session_start();
+        $msg = null;
+        $id_evento = $_SESSION['id_evento'];
+        $connection = \Yii::$app->db;
+        if ($sacar == "si") {
+            $msg = "reconocio string";
+
+            $msg = "reconocio si";
+            $table = Convocados::find()->where(['id_evento' => $_SESSION['id_evento']])->all();
+            foreach ($table as $val) {
+                $dni[] = $val['dni'];
+            }
+            if (isset($_SESSION['dni'])) {
+                $datos = array_diff($dni, $_SESSION['dni']);
+                $cant = count($datos);
+                for ($i = 0; $i < $cant; $i++) {
+                    $id = $datos[$i];
+                    $connection->createCommand("delete from convocados where dni=$id")->execute();
+                }
+            }
+            else
+            {
+                $connection->createCommand("delete from convocados where id_evento=$id_evento")->execute();
+            }
+        } else {
+            $tabla = Vdep_Cat::find()->where(['IN', 'dni', $_SESSION['dni']])->andWhere(['id_deporte' => $_SESSION['id_deporte']])->all();
+            foreach ($tabla as $valor) {
+                $dni = $valor['dni'];
+                $nombre = $valor['nombre'];
+                $connection->createCommand("insert IGNORE into convocados (dni,nombre,id_evento) VALUES ('$dni','$nombre','$id_evento')")->execute();
+            }
+        }
+        unset($_SESSION['dni']);
+        unset($_SESSION['id_evento']);
+        unset($_SESSION['deporte']);
+        $this->redirect(['evento/buscar', 'msg' => $msg]);
     }
 
 }

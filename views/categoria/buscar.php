@@ -18,8 +18,10 @@ $this->title = 'SGD CAE: Buscar Categoria';
         <label for="seleccionar categoria a modificar:">Seleccione:</label>
         <?= Html::dropDownList('id_categoria', NULL, $opciones, ['autofocus', 'class' => 'form-control']) ?>
     </div>
-    <input type="submit" value="Continuar" class="btn btn-default">
-    
+    <button type="submit" class="btn btn-default">
+        Continuar
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
     <?= Html::endForm() ?>
 </article>
 

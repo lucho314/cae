@@ -29,7 +29,7 @@ AppAsset::register($this);
                 $('.menu_movil').click(function () {
                     // $('nav').toggle(); Forma Sencilla de aparecer y desaparecer
 
-                    if (contador === 1) {
+                    if (contador == 1) {
                         $('aside').animate({
                             left: '0'
                         });
@@ -78,8 +78,7 @@ AppAsset::register($this);
                         <li class="row submenu"><a href="javascript:void(0);"><span class="glyphicon glyphicon-globe"></span>Deportes<span class="glyphicon glyphicon-menu-down"></span></a>
                             <ul class="children">
                                 <li><a href="<?= Url::toRoute("deporte/crear") ?>"><span class="glyphicon glyphicon-plus"></span>Alta</a></li>
-                                <li><a href="<?= Url::toRoute("deporte/modificar") ?>"><span class="glyphicon glyphicon-ok"></span>Modificación</a></li>
-                                <li><a href="<?= Url::toRoute("deporte/eliminar") ?>"><span class="glyphicon glyphicon-remove"></span>Baja</a></li>
+                                <li><a href="<?= Url::toRoute("deporte/buscar") ?>"><span class="glyphicon glyphicon-search"></span>Ver</a></li>
                             </ul>
                         </li>
                         <li class="row submenu"><a href="javascript:void(0);"><span class="glyphicon glyphicon-folder-open"></span>Categorias<span class="glyphicon glyphicon-menu-down"></span></a>
@@ -98,9 +97,8 @@ AppAsset::register($this);
                         </li>
                         <li class="row submenu"><a href="javascript:void(0);"><span class="glyphicon glyphicon-user"></span>Deportistas<span class="glyphicon glyphicon-menu-down"></span></a>
                             <ul class="children">
-                                <li><a href="<?= Url::toRoute("deportista/creardeportista") ?>"><span class="glyphicon glyphicon-plus"></span>Alta</a></li>
-                                <li><a href=""><span class="glyphicon glyphicon-ok"></span>Modificación</a></li>
-                                <li><a href=""><span class="glyphicon glyphicon-remove"></span>Baja</a></li>
+                                <li><a href="<?= Url::toRoute("deportista/crear") ?>"><span class="glyphicon glyphicon-plus"></span>Alta</a></li>
+                                <li><a href="<?=Url::toRoute("deportista/buscar")?>"><span class="glyphicon glyphicon-search"></span>Ver</a></li>
                                 <li><a href=""><span class="glyphicon glyphicon-print"></span>Imp. Ficha</a></li>
                             </ul>
                         </li>
@@ -120,7 +118,7 @@ AppAsset::register($this);
                         <li class="row"><a href=""><span class="glyphicon glyphicon-search"></span>Busqueda</a></li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-cog"></span>Backup</a></li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-wrench"></span>Restauración</a></li>
-                        <li class="row"><a href="/web/basic/web/index.php?r=usuario%2Flogout" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
+                        <li class="row"><a href="<?=Url::toRoute("usuario/logout")?>" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
                     </ul>		
                 </aside>
                 <?= $content ?>

@@ -178,7 +178,7 @@ class UsuarioController extends Controller {
                 }
             }
         }
-        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre');
+        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre_deporte');
         return $this->render("nuevo_profesor", ["model" => $model, "msg" => $msg, 'deporte' => $deporte]);
     }
 
@@ -224,7 +224,7 @@ class UsuarioController extends Controller {
                 }
             }
         }
-        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre');
+        $deporte = ArrayHelper::map(Deporte::find()->all(), 'id_deporte', 'nombre_deporte');
         return $this->render("nueva_subcomision", ["model" => $model, "msg" => $msg, 'deporte' => $deporte]);
     }
 
@@ -411,19 +411,30 @@ class UsuarioController extends Controller {
     public function actionAdmin() {
         $this->layout = "mainadmin";
         $nombre = Yii::$app->user->identity->nombre_usuario;
-        return $this->render("administrador", ['nombre' => $nombre]);
+        return $this->render("inicio", ['nombre' => $nombre]);
     }
 
     public function actionProfesor() {
         $this->layout = "mainprofe";
         $nombre = Yii::$app->user->identity->nombre_usuario;
-        return $this->render("profesor", ['nombre' => $nombre]);
+        return $this->render("inicio", ['nombre' => $nombre]);
     }
 
     public function actionSubcomision() {
         $this->layout = "mainsubcomision";
         $nombre = Yii::$app->user->identity->nombre_usuario;
-        return $this->render("subcomision", ['nombre' => $nombre]);
+        return $this->render("inicio", ['nombre' => $nombre]);
+    }
+    
+    public function actionVer()
+    {
+        $table=Users::find()->all();
+        $privilegio=array('administrador','sub comision','profesor');
+        list()=$privilegio;
     }
 
+    public function actionError()
+    {
+        return $this->render("errorjava");
+    }
 }

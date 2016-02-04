@@ -17,6 +17,7 @@ AppAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <script type="text/javascript" src="../web/js/jquery.js"></script>
         <script type="text/javascript" src="../web/js/menu.js"></script>
+        <link href='../web/imagenes/cae.ico' rel='shortcut icon' type='image/x-icon'>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
         <script type="text/javascript">
@@ -75,7 +76,7 @@ AppAsset::register($this);
                         </li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-user"></span>Profesores</a></li>
                         <li class="row"><a href=""><span class="glyphicon glyphicon-search"></span>Busqueda</a></li>
-                        <li class="row"><a href="/basic/web/index.php?r=usuario%2Flogout" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
+                        <li class="row"><a href="<?=Url::toRoute("usuario/logout")?>" data-method="post"><span class="glyphicon glyphicon-off"></span>Cerrar Sesion</a></li>
                     </ul>		
                 </aside>
                 <?= $content ?>

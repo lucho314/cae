@@ -18,28 +18,30 @@ $this->title = 'SGD CAE: Nueva Clase';
                 "enableAjaxValidation" => true,
             ])
     ?>
-        <h3>Asistencia:</h3>
-        <hr>
-        <div class="row">
-            <div class="col-xs-12 col-sm-3">
-                <div class="form-group">
-                    <label for="ingresar fecha de la clase">Fecha:</label>
-                    <?= $form->field($model, "fecha")->input("date", ["placeholder" => "Nombre del Deporte", "class" => "form-control", "autofocus"])->label(false) ?>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-3">
-                <div class="form-group">
-                    <label for="seleccionar comision">Comision:</label>
-                    <?= $form->field($model, 'comision')->dropDownList($comisiones)->label(false) ?>
-                </div>
+    <h3>Clase:</h3>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label for="ingresar fecha de la clase">Fecha:</label>
+                <?= $form->field($model, "fecha")->input("date", ["placeholder" => "Nombre del Deporte", "class" => "form-control", "autofocus"])->label(false) ?>
             </div>
         </div>
-        <div class="row col-xs-12">
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label for="seleccionar comision">Comision:</label>
+                <?= $form->field($model, 'comision')->dropDownList($comisiones)->label(false) ?>
+            </div>
+        </div>
+        <div class="col-xs-12 col-xs-lg-6">
             <div class="form-group">
                 <label for="ingresar observaciones">Observaciones:</label>
                 <?= $form->field($model, 'observaciones')->textarea(['class' => "form-control", 'style' => "resize:none;", 'rows' => "4"])->label(false) ?>
             </div>
         </div>
-        <?= Html::submitButton("continuar",["class"=>"btn btn-primary"]);?>
+    </div>
+    <button type="submit" class="btn btn-default botones">
+        Continuar<span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
     <?php $form->end() ?>
 </article>

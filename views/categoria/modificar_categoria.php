@@ -47,7 +47,7 @@ $this->title = 'SGD CAE: Modificar Categoria';
             </div>
             <div style="float:right;">
             <input type="submit" value="Guardar" class="btn btn-primary">
-            <a href="<?= Url::toRoute("categoria/buscar")?>" class="btn btn-default">Atras</a>
+            <a href="<?= Url::toRoute("categoria/buscar")?>" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>Atras</a>
             </div>
         </div>
 

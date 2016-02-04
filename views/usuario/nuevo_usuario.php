@@ -10,11 +10,8 @@ $this->title = 'SGD CAE: Nuevo Usuario';
     <hr>
     <?=
     Html::beginForm(
-            Url::toRoute("usuario/nuevo"),
-            "post",
-            ['class' => 'row col-xs-12 col-md-4']
+            Url::toRoute("usuario/nuevo"), "post", ['class' => 'row col-xs-12 col-md-4']
     );
-
     ?>
     <div class="form-group">
         <label for="seleccionar tipo de usuario">Seleccione:</label>
@@ -24,6 +21,9 @@ $this->title = 'SGD CAE: Nuevo Usuario';
             <option value="3">Profesor</option>
         </select>
     </div>
-    <input type="submit" value="Continuar" class="btn btn-default">
+    <button type="submit" class="btn btn-default">
+        Continuar <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
+    
 <?= Html::endForm() ?>
 </article>

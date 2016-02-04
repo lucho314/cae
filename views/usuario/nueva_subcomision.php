@@ -72,7 +72,9 @@ $this->title = 'SGD CAE: Nueva Subcomisión';
             </div>
             <div class="botones">
                 <input type="submit" value="Guardar" class="btn btn-primary">
-                <a href="<?= Url::toRoute("usuario/nuevo") ?>" class="btn btn-default">Atras</a>
+                <a href="<?= Url::toRoute("usuario/nuevo") ?>" class="btn btn-default">
+                    <span class="glyphicon glyphicon-chevron-left"></span>Atras
+                </a>
             </div>
         </div>
     </div>

@@ -13,6 +13,8 @@ $a = ['no' => 'NO', 'si' => 'SI'];
     </style>
     <script type="text/javascript" src="../web/js/menu.js"></script>
     <script type="text/javascript" src="../web/js/mostrar.js"></script>
+    <script type="text/javascript" src="../web/js/fileinput.js"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="../web/css/fileinput.css"> 
 </head>
 <article class="col-xs-12 col-md-10">
     <?php
@@ -31,8 +33,8 @@ $a = ['no' => 'NO', 'si' => 'SI'];
             <div class="row">
                 <div class="col-xs-12 col-md-6">
                     <div class="form-group">
-                        <label for="Seleccione foto">Seleccione foto:</label>
-                        <?= $form->field($model, "file[]",['enableAjaxValidation' => false])->fileInput(['multiple' => true])->label(false) ?>
+                        <label for="ingrese foto de perfil">Foto:</label>
+                        <?= $form->field($model, "file[]",['enableAjaxValidation' => false])->fileInput(['multiple' => true,"data-preview-file-type"=>"any","id"=>"file-1","class"=>"file"])->label(false) ?>
                     </div>
                     <div class="form-group">
                         <label for="ingresar nombre del deportista">Nombre:</label>
@@ -54,13 +56,13 @@ $a = ['no' => 'NO', 'si' => 'SI'];
                         <?= $form->field($model, "domicilio")->input("text", ["placeholder" => "Domicilio", "class" => "form-control"])->label(false) ?>
                     </div>
 
+                </div>	
+                <div class="col-xs-12 col-md-6">
+                    
                     <div class="form-group">
                         <label for="ingresar telefono del deportista">Telefono:</label>
                         <?= $form->field($model, "telefono")->input("number", ["placeholder" => "Telefono eje:3434678950", "class" => "form-control"])->label(false) ?>
                     </div>
-
-                </div>	
-                <div class="col-xs-12 col-md-6">
                     <div class="form-group">
                         <label for="ingresar email del deportista">Email:</label>
                         <?= $form->field($model, "email")->input("text", ["placeholder" => "Email", "class" => "form-control"])->label(false) ?>
@@ -100,7 +102,7 @@ $a = ['no' => 'NO', 'si' => 'SI'];
                         <label>                       
                             <?= $form->field($model, "medicamento")->radioList($a, ['style' => 'display:inline;', 'separator' => ' '])->label(false) ?> 
                         </label>                    
-                        <?= $form->field($model, "desc_medicamento")->input("text", ["placeholder" => "¿Cuales?", "class" => "form-control"])->label(false) ?>
+                        <?= $form->field($model, "desc_medicamento")->input("text", ["placeholder" => "¿Cuales?", "class" => "form-control","disabled" => "disabled"])->label(false) ?>
                     </div>
 
                     <div class="form-group">
